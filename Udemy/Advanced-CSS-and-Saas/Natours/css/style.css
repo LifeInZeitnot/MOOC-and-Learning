@@ -1,0 +1,186 @@
+@charset "UTF-8";
+/* reset de tous les éléménts */
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; }
+
+/* toutes les propriétés placés dans le body seront hérités sur le reste des éléments */
+body {
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #777;
+  padding: 30px;
+  /* propriété non hérité. Permet d'ajouter un cadre blanc tout autour de la page */ }
+
+.header {
+  height: 95vh;
+  /* 95% de la hauteur du viewport */
+  /* Gestion de l'image sous un dégradé de vert */
+  background-image: linear-gradient(to right bottom, rgba(126, 213, 111, 0.8), rgba(40, 180, 133, 0.8)), url(../img/hero.jpg);
+  background-size: cover;
+  /* indique que l'image doit s'adapter à la taille du container */
+  background-position: top;
+  /* collé en haut, fait que lorsque l'on réduit la page c'est par le bas que l'image est rognée */
+  position: relative;
+  /* pour permettre l'utilisation de position: absolute et top/left dans l'élément enfant */
+  /* créé l'effet de triangle rogné en bas à droite 
+     on défini les 4 points du polygone visible */
+  clip-path: polygon(0 0, 100% 0, 100% 75%, 0 100%); }
+
+.header__logo-box {
+  position: absolute;
+  /* il a fallu ajouter position: relative dans l'élément parent pour gérer le bon positionnement */
+  top: 40px;
+  left: 40px; }
+
+.header__logo {
+  height: 35px;
+  /* taille de l'image */ }
+
+.header__text-box {
+  /* gère la position du titre dans l'image d'entête. On positionne à 50% puis on effectue une translation à -50% du centre */
+  position: absolute;
+  /* ne pas oublier position: relative dans le parent (la référence) */
+  top: 40%;
+  /* position par rapport au container */
+  left: 50%;
+  /* du coup le texte s'écrit vers la droite à partir du centre */
+  transform: translate(-50%, -50%);
+  /* on le décalle donc de 50% de sa taille vers la gauche => il est centré */
+  text-align: center; }
+
+.heading-primary {
+  color: #fff;
+  text-transform: uppercase;
+  backface-visibility: hidden;
+  /* cache la backpart d'un élément que l'on fait bouger : gère le petit problème de saut sur la fin de l'animation du titre (à peine visible) */
+  margin-bottom: 60px;
+  /* laisse la place au bouton en dessous */ }
+
+.heading-primary--main {
+  display: block;
+  /* permet de renvoyer le span suivant à la ligne */
+  font-size: 60px;
+  font-weight: 400;
+  letter-spacing: 35px;
+  /* excute l'animation nommé moveInLeft */
+  animation-name: moveInLeft;
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
+  /* ex: l'animation démarre vite puis ralenti */
+  /*
+    animation-delay: 3s;
+    animation-iteration-count: 3;
+    */ }
+
+.heading-primary--sub {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 17.4px;
+  animation: moveInRight 1s ease-out;
+  /* raccourci d'appel de l'animation */ }
+
+@keyframes moveInLeft {
+  /* programme qui gère l'animation du titre de la gauche vers la droite */
+  0% {
+    opacity: 0;
+    /* au début le texte est invisible */
+    transform: translateX(-100px); }
+  80% {
+    transform: translateX(10px); }
+  100% {
+    opacity: 1;
+    transform: translate(0); } }
+
+@keyframes moveInRight {
+  /* programme qui gère l'animation du titre de la droite vers la gauche */
+  0% {
+    opacity: 0;
+    /* au début le texte est invisible */
+    transform: translateX(100px); }
+  80% {
+    transform: translateX(-10px); }
+  100% {
+    opacity: 1;
+    transform: translate(0); } }
+
+.btn:link,
+.btn:visited {
+  /* :link est une pseudo class qui permet de coder un effet sous certaines etats (click, hover, ...) */
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 15px 40px;
+  /* padding de 15px en haut et bas et 40px à droite et gauche */
+  display: inline-block;
+  /* à ajouter quand on met un padding sur un bouton afin de la marge ne soit pas prise sur les élements qui l'entoure. en plus ce bouton sera centré parce que considéré comme inline par son container qui a la propriété center */
+  border-radius: 100px;
+  /* donne l'effet 'angles arrondis' */
+  transition: all .2s;
+  /* ralenti tous les transform afin qu'ils se produisent en .2s Doit être positionné sur l'état initial */
+  position: relative;
+  /* référence pour les objets enfant qui sont en position: absolute */ }
+
+.btn:hover {
+  /* quand on passe la souris sur le bouton */
+  transform: translateY(-3px);
+  /* monte légèrement le bouton */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  /* petit effet d'ombre sous le bouton quand il se soulève */ }
+
+.btn:active {
+  /* quand on clique sur le bouton */
+  transform: translateY(-1px);
+  /* effet de clic (le bouton descend légèrement par rapport au hover */
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  /* effet d'ombre réduit par rapport au hover pour l'effet d'enfoncement du bouton */ }
+
+.btn--white {
+  background-color: #fff;
+  color: #777; }
+
+.btn::after {
+  /* créé et stylise un élément virtuel (enfant de l'élément désigné .btn) qui permet de donner un effet (ici le hover sur le bouton) */
+  content: "";
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  border-radius: 100px;
+  position: absolute;
+  /* une position absolute doit avoir une référence : le premier élément parent qui est position: relative */
+  top: 0;
+  left: 0;
+  z-index: -1;
+  /* l'élément virtuel est positionné derrière le bouton */
+  transition: all .4s;
+  /* gère les transform sur les éléments enfant */ }
+
+.btn--white::after {
+  background-color: #fff; }
+
+.btn:hover::after {
+  /* état de l'élément virtuel lors du hover sur le bouton */
+  transform: scaleX(1.4) scaleY(1.6);
+  /* aggrandit ou diminue l'élément */
+  opacity: 0; }
+
+@keyframes moveInBottom {
+  /* programme qui gère l'animation du titre du bas vers le haut */
+  0% {
+    opacity: 0;
+    /* au début le bouton est invisible */
+    transform: translateY(30px); }
+  100% {
+    opacity: 1;
+    transform: translate(0); } }
+
+.btn--animated {
+  animation: moveInBottom .5s ease-out .75s;
+  /* animation du bouton au chargement */
+  animation-fill-mode: backwards;
+  /* applique le 0% de l'animation à l'init de la page, ce qui évite le chargement du bouton puis son déplacement d'une autre position (décallage dû au délai de .75s après le chargement de la page) */ }
